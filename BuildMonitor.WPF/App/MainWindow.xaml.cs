@@ -1,49 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using App.Services;
+﻿using System.Windows;
+using BuildMonitor.WPF.Services;
 
-namespace App
+namespace BuildMonitor.WPF
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private IBuildService _buildService;
+        public MainWindow(IBuildService buildService)
         {
+            _buildService = buildService;
             InitializeComponent();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             this.LoadButton.IsEnabled = false;
-            var repo = new BuildRepository();
+            
             try
             {
-                var builds = await repo.GetAll();
+                var builds = await _buildService.GetAll();
 
                 this.DataGrid.ItemsSource = builds;
-            }
-            catch (Exception ex)
-            {
-
             }
             finally
             {
                 this.LoadButton.IsEnabled = true;
             }
+        }
+
+        private void ReportByDay_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReportBySolution_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
