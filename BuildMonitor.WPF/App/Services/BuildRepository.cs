@@ -22,7 +22,8 @@ namespace App.Services
     {
         public async Task<String> Read()
         {
-            var path = "C:/Users/a.sauvinet/AppData/Roaming/Build Monitor/buildtimes.json";
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) +
+                       "/AppData/Roaming/Build Monitor/buildtimes.json";
 
             using (var reader = File.OpenText(path))
             {
