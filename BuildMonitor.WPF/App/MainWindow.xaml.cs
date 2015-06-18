@@ -18,7 +18,7 @@ namespace BuildMonitor.WPF
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             this.LoadButton.IsEnabled = false;
-            
+
             try
             {
                 var builds = await _buildService.GetAll();
@@ -31,14 +31,36 @@ namespace BuildMonitor.WPF
             }
         }
 
-        private void ReportByDay_Click(object sender, RoutedEventArgs e)
+        private async void ReportByDay_Click(object sender, RoutedEventArgs e)
         {
+            this.LoadButton.IsEnabled = false;
 
+            try
+            {
+                var reports = await _buildService.GetDailyReports();
+
+                this.DataGrid.ItemsSource = reports;
+            }
+            finally
+            {
+                this.LoadButton.IsEnabled = true;
+            }
         }
 
-        private void ReportBySolution_Click(object sender, RoutedEventArgs e)
+        private async void ReportBySolution_Click(object sender, RoutedEventArgs e)
         {
+            this.LoadButton.IsEnabled = false;
 
+            try
+            {
+                var reports = await _buildService.GetSolutionReports();
+
+                this.DataGrid.ItemsSource = reports;
+            }
+            finally
+            {
+                this.LoadButton.IsEnabled = true;
+            }
         }
     }
 }

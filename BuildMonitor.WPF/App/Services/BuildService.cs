@@ -22,14 +22,28 @@ namespace BuildMonitor.WPF.Services
 
         public async Task<IEnumerable<DailyReport>> GetDailyReports()
         {
-            var builds = await GetDailyReports();
+            var builds = await GetAll();
 
-            //var report = builds.Select(b => new {day = new DateTime(b.Date.Year, b.Date.Month, b.Date.Day), build = b})
-            //    .GroupBy(b => b.day,
-            //        b => b,
-            //        (key, g) => new DailyReport() {Date = key,Builds = new Build{ Solution = g.}});
+            var report = builds
+                            .Select(b => new {day = b.GetDate(), build = b})
+                            .GroupBy(b => b.day,
+                                    b => b.build,
+                                    (key, g) => new DailyReport() {Date = key,Builds = g});
 
-            throw  new NotImplementedException();
+            return report;
+
+        }
+
+        public async Task<IEnumerable<SolutionReport>> GetSolutionReports()
+        {
+            var builds = await GetAll();
+
+            var report = builds
+                            .Select(b => new { name = b.Solution.Name, build = b })
+                            .GroupBy(b => b.name,
+                                    b => b.build,
+                                    (key, g) => new SolutionReport() { SolutionName = key, Builds = g });
+            return report;
 
         }
     }

@@ -8,5 +8,6 @@ namespace BuildMonitor.WPF.Services
     {
         Task<IEnumerable<Build>> GetAll();
         Task<IEnumerable<DailyReport>> GetDailyReports();
+        Task<IEnumerable<SolutionReport>> GetSolutionReports();
     }
 }
