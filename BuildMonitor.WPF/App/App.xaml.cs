@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using StructureMap;
 
 namespace BuildMonitor.WPF
 {
@@ -10,7 +11,10 @@ namespace BuildMonitor.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            Bootstrapper.Init();
+            var container = Bootstrapper.Init();
+
+            var window = container.GetInstance<MainWindow>();
+            window.Show();
         }
     }
 }
