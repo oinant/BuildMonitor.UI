@@ -1,33 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using App.Models;
+using BuildMonitor.WPF.Models;
 using Newtonsoft.Json;
 
-namespace App.Services
+namespace BuildMonitor.WPF.Services
 {
-    public class BuildRepository
+    public class BuildRepository : IBuildRepository
     {
+        private readonly IBuildFileReader _buildFileReader;
+
+        public BuildRepository(IBuildFileReader buildFileReader)
+        {
+            _buildFileReader = buildFileReader;
+        }
+
         public async Task<IEnumerable<Build>> GetAll()
         {
-            var bulk = await new BuildFileReader().Read();
+            var bulk = await _buildFileReader.Read();
 
             var builds = JsonConvert.DeserializeObject<IEnumerable<Build>>(bulk);
             return builds;
-        }
-    }
-
-    public class BuildFileReader
-    {
-        public async Task<String> Read()
-        {
-            var path = "C:/Users/a.sauvinet/AppData/Roaming/Build Monitor/buildtimes.json";
-
-            using (var reader = File.OpenText(path))
-            {
-                return reader.ReadToEnd();
-            }
         }
     }
 }
