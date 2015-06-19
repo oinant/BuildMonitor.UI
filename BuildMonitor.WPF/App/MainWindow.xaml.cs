@@ -13,6 +13,8 @@ namespace BuildMonitor.WPF
         {
             _buildService = buildService;
             InitializeComponent();
+            this.DataGrid.Visibility = Visibility.Hidden;
+            this.ReportGrid.Visibility = Visibility.Hidden;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -22,8 +24,9 @@ namespace BuildMonitor.WPF
             try
             {
                 var builds = await _buildService.GetAll();
-
                 this.DataGrid.ItemsSource = builds;
+                this.DataGrid.Visibility = Visibility.Visible;
+                this.ReportGrid.Visibility = Visibility.Hidden;
             }
             finally
             {
@@ -38,8 +41,9 @@ namespace BuildMonitor.WPF
             try
             {
                 var reports = await _buildService.GetDailyReports();
-
-                this.DataGrid.ItemsSource = reports;
+                this.ReportGrid.ItemsSource = reports;
+                this.DataGrid.Visibility = Visibility.Hidden;
+                this.ReportGrid.Visibility = Visibility.Visible;
             }
             finally
             {
@@ -54,8 +58,10 @@ namespace BuildMonitor.WPF
             try
             {
                 var reports = await _buildService.GetSolutionReports();
-
-                this.DataGrid.ItemsSource = reports;
+                this.ReportGrid.ItemsSource = reports;
+                
+                this.DataGrid.Visibility = Visibility.Hidden;
+                this.ReportGrid.Visibility = Visibility.Visible;
             }
             finally
             {
